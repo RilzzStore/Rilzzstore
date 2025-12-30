@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Otomatis</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins}
+body{
+  min-height:100vh;
+  background:url('latarbg.jpg') center/cover no-repeat;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:#fff;
+}
+.container{
+  width:95%;
+  max-width:460px;
+  background:rgba(0,0,0,.75);
+  backdrop-filter:blur(8px);
+  padding:18px;
+  border-radius:16px;
+}
+h2{text-align:center;margin-bottom:12px}
+
+.products{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  max-height:330px;
+  overflow-y:auto;
+}
+.products::-webkit-scrollbar{width:4px}
+.products::-webkit-scrollbar-thumb{
+  background:#00f7ff;border-radius:10px;
+}
+
+.product{
+  background:rgba(255,255,255,.08);
+  border-radius:12px;
+  padding:8px;
+  text-align:center;
+  cursor:pointer;
+  border:2px solid transparent;
+  transition:.3s;
+}
+.product.active{
+  border-color:#00f7ff;
+  background:rgba(0,247,255,.15);
+}
+.product img{
+  width:100%;
+  height:90px;
+  object-fit:cover;
+  border-radius:8px;
+}
+.product small{color:#00f7ff}
+
+select,input,button{
+  width:100%;
+  margin-top:12px;
+  padding:12px;
+  border-radius:10px;
+  border:none;
+  outline:none;
+}
+select,input{background:#111;color:#fff}
+
+.info{
+  display:none;
+  background:rgba(255,255,255,.08);
+  padding:10px;
+  border-radius:10px;
+  margin-top:10px;
+}
+.info b{color:#00f7ff}
+
+button{
+  background:linear-gradient(135deg,#00f7ff,#0066ff);
+  color:#000;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.loading{text-align:center;display:none;margin-top:10px}
+.loader{
+  width:30px;height:30px;
+  border:4px solid #fff;
+  border-top:4px solid transparent;
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+  margin:auto;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+
+<body>
+<div class="container">
+<h2>LIST APK BUG VIP</h2>
+
+<div class="products">
+  <div class="product" onclick="selectProduct('Produk 1','5000',this)">
+    <img src="produk1.png">
+    <div>Apk unband</div><small>Rp30.000</small>
+  </div>
+  <div class="product" onclick="selectProduct('Produk 2','10000',this)">
+    <img src="produk2.png">
+    <div>Dexlazav1</div><small>Rp40.000</small>
+  </div>
+  <div class="product" onclick="selectProduct('Produk 3','15000',this)">
+    <img src="produk3.png">
+    <div>Dark Purple</div><small>Rp50.000</small>
+  </div>
+  <div class="product" onclick="selectProduct('Produk 4','20000',this)">
+    <img src="produk4.png">
+    <div>Dexlaza New update</div><small>Rp60.000</small>
+  </div>
+  <div class="product" onclick="selectProduct('Produk 5','25000',this)">
+    <img src="produk5.png">
+    <div>heckerv5</div><small>Rp70.000</small>
+  </div>
+  <div class="product" onclick="selectProduct('Produk 6','30000',this)">
+    <img src="produk6.png">
+    <div>Itaci×Dexlaza</div><small>Rp80.000</small>
+  </div>
+</div>
+
+<select id="payment" onchange="showTF()">
+  <option value="">Pilih Pembayaran</option>
+  <option value="DANA">DANA</option>
+  <option value="GOPAY">GOPAY</option>
+</select>
+
+<div class="info" id="tfInfo"></div>
+
+<input type="file" accept="image/*">
+<small>Bukti TF dikirim di WhatsApp</small>
+
+<button onclick="order()">Lanjut ke WhatsApp</button>
+
+<div class="loading" id="loading">
+  <div class="loader"></div>
+  <small>Memproses...</small>
+</div>
+</div>
+
+<script>
+let produk="", harga="";
+const NO_DANA="083125913760";
+const NO_GOPAY="083125913760";
+const NAMA="Farel";
+const ADMIN_WA="6285126647996";
+
+function selectProduct(p,h,el){
+  produk=p; harga=h;
+  document.querySelectorAll('.product')
+    .forEach(x=>x.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function showTF(){
+  let pay=document.getElementById("payment").value;
+  let box=document.getElementById("tfInfo");
+  if(!pay){box.style.display="none";return;}
+  let nomor = pay==="DANA"?NO_DANA:NO_GOPAY;
+  box.innerHTML=`<b>${pay}</b><br>Nomor: ${nomor}<br>A/N: ${NAMA}`;
+  box.style.display="block";
+}
+
+function order(){
+  let pay=document.getElementById("payment").value;
+  if(!produk||!pay){
+    alert("Pilih produk & pembayaran!");
+    return;
+  }
+  document.getElementById("loading").style.display="block";
+  let msg=`ORDER FILE%0AProduk: ${produk}%0AHarga: Rp${harga}%0APembayaran: ${pay}%0ASaya sudah transfer.`;
+  setTimeout(()=>{
+    location.href=`https://wa.me/${ADMIN_WA}?text=${msg}`;
+  },1200);
+}
+</script>
+</body>
+</html>
